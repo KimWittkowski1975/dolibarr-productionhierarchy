@@ -161,7 +161,7 @@ print '<tr class="liste_titre"><th colspan="2">'.$langs->trans('AnalyzeProductio
 
 // Product selection
 print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans('Product').'</td><td>';
-$form->select_produits($product_id, 'product_id', '', 0, 0, -1, 2, '', 1, array(), 0, '1', 0, 'minwidth200', 0, '', null, 1);
+$form->select_produits($product_id, 'product_id', '', 0, 0, 1, 2, '', 0, array(), 0, '1', 0, 'minwidth200', 0, '', null, 0);
 print '</td></tr>';
 
 // Desired quantity
