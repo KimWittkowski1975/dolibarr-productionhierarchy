@@ -37,7 +37,6 @@ if (!$res) {
 }
 
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.form.class.php';
-require_once DOL_DOCUMENT_ROOT.'/core/class/html.formproduct.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/product.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
 require_once DOL_DOCUMENT_ROOT.'/product/stock/class/entrepot.class.php';
@@ -58,7 +57,6 @@ $warehouse_id = GETPOSTINT('warehouse_id');
 
 // Initialize objects
 $form = new Form($db);
-$formproduct = new FormProduct($db);
 $planner = new HierarchyPlanner($db);
 $mo_suggestor = new MOSuggestor($db);
 
@@ -163,7 +161,7 @@ print '<tr class="liste_titre"><th colspan="2">'.$langs->trans('AnalyzeProductio
 
 // Product selection
 print '<tr><td class="titlefieldcreate fieldrequired">'.$langs->trans('Product').'</td><td>';
-$formproduct->select_produits($product_id, 'product_id', '', 0, 0, -1, 2, '', 1, array(), 0, '1', 0, 'minwidth200', 0, '', null, 1);
+$form->select_produits($product_id, 'product_id', '', 0, 0, -1, 2, '', 1, array(), 0, '1', 0, 'minwidth200', 0, '', null, 1);
 print '</td></tr>';
 
 // Desired quantity

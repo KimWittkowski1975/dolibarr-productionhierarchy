@@ -87,10 +87,11 @@ if ($action == 'update') {
 	$error = 0;
 	
 	foreach ($arrayofparameters as $key => $val) {
-		$value = GETPOST($key, 'alpha');
-		
 		if ($val['type'] == 'yesno') {
-			$value = GETPOSTINT($key);
+			// Checkbox: 0 if not checked, 1 if checked
+			$value = GETPOST($key, 'int') ? 1 : 0;
+		} else {
+			$value = GETPOST($key, 'alpha');
 		}
 		
 		$result = dolibarr_set_const($db, $key, $value, 'chaine', 0, '', $conf->entity);
@@ -161,7 +162,8 @@ foreach ($arrayofparameters as $key => $val) {
 	print '</td><td>';
 
 	if ($val['type'] == 'yesno') {
-		print ajax_constantonoff($key);
+		$checked = getDolGlobalInt($key);
+		print '<input type="checkbox" name="'.$key.'" value="1"'.($checked ? ' checked' : '').'>';
 	} elseif ($val['type'] == 'text') {
 		$value = getDolGlobalString($key);
 		print '<input name="'.$key.'" class="flat '.(empty($val['css']) ? 'minwidth200' : $val['css']).'" value="'.dol_escape_htmltag($value).'">';
