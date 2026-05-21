@@ -213,10 +213,10 @@ class HierarchyPlanner
 		// Stock
 		$stock = 0;
 		if (!empty($options['use_virtual_stock'])) {
-			$product->load_stock('', 1); // Virtual stock
+			$product->load_stock(''); // Load both real and virtual (no 'novirtual' option)
 			$stock = $product->stock_theorique;
 		} else {
-			$product->load_stock('nobatch,novirtual'); // Real stock only
+			$product->load_stock('novirtual'); // Real stock only
 			$stock = $product->stock_reel;
 		}
 
@@ -224,17 +224,22 @@ class HierarchyPlanner
 			$stock = 0;
 		}
 
-		// Filter by warehouse prefix
-		$warehouse_prefix = getDolGlobalString('PRODUCTIONHIERARCHY_WAREHOUSE_PREFIX', '10001');
-		if (!empty($warehouse_prefix) && is_array($product->stock_warehouse)) {
+		// Filter by warehouse prefix if configured
+		$warehouse_prefix = getDolGlobalString('PRODUCTIONHIERARCHY_WAREHOUSE_PREFIX', '');
+		if (!empty($warehouse_prefix) && is_array($product->stock_warehouse) && count($product->stock_warehouse) > 0) {
 			$filtered_stock = 0;
+			$found_match = false;
 			foreach ($product->stock_warehouse as $warehouse_id => $warehouse_data) {
-				// Check if warehouse ID or label starts with prefix
+				// Check if warehouse ID starts with prefix
 				if (strpos((string)$warehouse_id, $warehouse_prefix) === 0) {
 					$filtered_stock += $warehouse_data->real;
+					$found_match = true;
 				}
 			}
-			$stock = $filtered_stock;
+			// Only apply filter if we found matching warehouses
+			if ($found_match) {
+				$stock = $filtered_stock;
+			}
 		}
 
 		// MOs

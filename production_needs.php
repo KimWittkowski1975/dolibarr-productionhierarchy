@@ -37,6 +37,7 @@ if (!$res) {
 }
 
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.form.class.php';
+require_once DOL_DOCUMENT_ROOT.'/product/class/html.formproduct.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/product.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
 require_once DOL_DOCUMENT_ROOT.'/product/stock/class/entrepot.class.php';
@@ -57,6 +58,7 @@ $warehouse_id = GETPOSTINT('warehouse_id');
 
 // Initialize objects
 $form = new Form($db);
+$formproduct = new FormProduct($db);
 $planner = new HierarchyPlanner($db);
 $mo_suggestor = new MOSuggestor($db);
 
@@ -345,7 +347,7 @@ if ($analysis_results !== null && is_array($analysis_results)) {
 			// Warehouse selection
 			print '<div style="margin-bottom: 10px;">';
 			print '<label><strong>'.$langs->trans('WarehouseForProduction').':</strong></label> ';
-			$form->select_companywarehouse($warehouse_id, 'warehouse_id', '', 1, 0, 0, '', 0, 0, array(), 'minwidth200');
+			$formproduct->selectWarehouses($warehouse_id, 'warehouse_id', '', 1, 0, 0, '', 0, 0, array(), 'minwidth200');
 			print '</div>';
 
 			foreach ($suggestions['mos_to_create'] as $index => $mo_suggestion) {
