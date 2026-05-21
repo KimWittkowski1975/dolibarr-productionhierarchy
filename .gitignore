@@ -1,0 +1,28 @@
+# Backup files
+*.bak
+*.backup
+*.backup_*
+*.broken_*
+*.old
+*~
+
+# Test files
+test_*.php
+debug_*.php
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+tmp/
+temp/
