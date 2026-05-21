@@ -1,0 +1,234 @@
+/* Copyright (C) 2025 Kim Wittkowski <kim@wittkowski-it.de>
+ *
+ * Production Hierarchy Module - Styles
+ */
+
+/* Availability Summary */
+.ph-availability-summary {
+	background: #f8f9fa;
+	border: 1px solid #dee2e6;
+	border-radius: 4px;
+	padding: 15px;
+	margin-bottom: 20px;
+}
+
+.ph-availability-item {
+	display: flex;
+	justify-content: space-between;
+	padding: 8px 0;
+	border-bottom: 1px solid #e9ecef;
+}
+
+.ph-availability-item:last-child {
+	border-bottom: none;
+	font-weight: bold;
+	margin-top: 8px;
+	padding-top: 12px;
+	border-top: 2px solid #666;
+}
+
+.ph-availability-label {
+	color: #495057;
+}
+
+.ph-availability-value {
+	font-weight: 600;
+	color: #212529;
+}
+
+.ph-shortage {
+	color: #dc3545;
+}
+
+.ph-surplus {
+	color: #28a745;
+}
+
+/* Component Hierarchy */
+.ph-hierarchy-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+}
+
+.ph-hierarchy-level-0 {
+	font-weight: bold;
+	background-color: #e9ecef;
+}
+
+.ph-hierarchy-level-1 {
+	padding-left: 20px;
+}
+
+.ph-hierarchy-level-2 {
+	padding-left: 40px;
+}
+
+.ph-hierarchy-level-3 {
+	padding-left: 60px;
+}
+
+.ph-component-missing {
+	background-color: #f8d7da;
+}
+
+.ph-component-low {
+	background-color: #fff3cd;
+}
+
+.ph-component-ok {
+	background-color: #d4edda;
+}
+
+/* Suggestions */
+.ph-suggestions {
+	margin-top: 20px;
+}
+
+.ph-suggestions-section {
+	background: #fff;
+	border: 1px solid #dee2e6;
+	border-radius: 4px;
+	padding: 15px;
+	margin-bottom: 15px;
+}
+
+.ph-suggestions-section h3 {
+	margin-top: 0;
+	color: #495057;
+	font-size: 1.1em;
+	border-bottom: 2px solid #dee2e6;
+	padding-bottom: 8px;
+	margin-bottom: 12px;
+}
+
+.ph-suggestion-item {
+	padding: 10px;
+	margin-bottom: 8px;
+	border: 1px solid #e9ecef;
+	border-radius: 3px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.ph-suggestion-item:hover {
+	background-color: #f8f9fa;
+}
+
+.ph-suggestion-checkbox {
+	margin-right: 10px;
+}
+
+.ph-suggestion-info {
+	flex-grow: 1;
+}
+
+.ph-suggestion-actions {
+	margin-left: 10px;
+}
+
+.ph-priority-badge {
+	display: inline-block;
+	padding: 2px 6px;
+	border-radius: 3px;
+	font-size: 0.85em;
+	font-weight: bold;
+	margin-right: 8px;
+}
+
+.ph-priority-1 {
+	background-color: #dc3545;
+	color: white;
+}
+
+.ph-priority-2 {
+	background-color: #ffc107;
+	color: #212529;
+}
+
+.ph-priority-3 {
+	background-color: #17a2b8;
+	color: white;
+}
+
+/* Status badges */
+.ph-badge-available {
+	background-color: #28a745;
+	color: white;
+	padding: 3px 8px;
+	border-radius: 3px;
+	font-size: 0.9em;
+}
+
+.ph-badge-missing {
+	background-color: #dc3545;
+	color: white;
+	padding: 3px 8px;
+	border-radius: 3px;
+	font-size: 0.9em;
+}
+
+.ph-badge-sufficient {
+	background-color: #6c757d;
+	color: white;
+	padding: 3px 8px;
+	border-radius: 3px;
+	font-size: 0.9em;
+}
+
+/* Icons */
+.ph-icon-mo {
+	color: #007bff;
+}
+
+.ph-icon-order {
+	color: #17a2b8;
+}
+
+.ph-icon-stock {
+	color: #28a745;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.ph-availability-item {
+		flex-direction: column;
+	}
+	
+	.ph-suggestion-item {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	
+	.ph-suggestion-actions {
+		margin-top: 10px;
+		margin-left: 0;
+	}
+}
+
+/* Loading indicator */
+.ph-loading {
+	text-align: center;
+	padding: 40px;
+	color: #6c757d;
+}
+
+.ph-loading:after {
+	content: "...";
+	animation: ph-dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes ph-dots {
+	0%, 20% { content: "."; }
+	40% { content: ".."; }
+	60%, 100% { content: "..."; }
+}
+
+/* No results */
+.ph-no-results {
+	text-align: center;
+	padding: 40px;
+	color: #6c757d;
+	font-style: italic;
+}

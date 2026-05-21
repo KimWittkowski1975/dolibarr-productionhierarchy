@@ -1,0 +1,130 @@
+# Production Hierarchy Modul - Deutsche Übersetzung
+# Copyright (C) 2025 Kim Wittkowski <kim@wittkowski-it.de>
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+CHARSET=UTF-8
+
+# Modul
+Module8000100Name=Produktionshierarchie
+Module8000100Desc=Erweiterte Materialbedarfsplanung (MRP) mit intelligenten Produktions- und Beschaffungsvorschlägen
+
+# Admin Setup
+ProductionHierarchySetup=Produktionshierarchie Einstellungen
+ProductionHierarchyAbout=Über Produktionshierarchie
+ProductionHierarchySetupInfo=Konfigurieren Sie, wie das Produktionshierarchie-Modul Materialbedarfe berechnet und Vorschläge generiert.
+
+# Konfiguration
+UseVirtualStock=Virtuellen Bestand verwenden
+UseVirtualStockHelp=Wenn aktiviert, werden Berechnungen mit virtuellem Bestand durchgeführt (physischer Bestand + geplante Bestellungen - Kundenaufträge). Wenn deaktiviert, wird nur der physische Bestand verwendet.
+WarehousePrefix=Lager-Präfix
+WarehousePrefixHelp=Nur Lager, die mit diesem Präfix beginnen, werden in Bestandsberechnungen einbezogen (z.B. "10001" schließt 10001, 100010, 100012 usw. ein). Leer lassen für alle Lager.
+ConsiderMOs=Fertigungsaufträge berücksichtigen
+ConsiderMOsHelp=Wenn aktiviert, werden aktive Fertigungsaufträge (Bestätigt & In Bearbeitung) in Verfügbarkeitsberechnungen einbezogen.
+ConsiderSupplierOrders=Lieferantenbestellungen berücksichtigen
+ConsiderSupplierOrdersHelp=Wenn aktiviert, werden eingehende Lieferantenbestellungen (Bestellt & Teilweise empfangen) in Verfügbarkeitsberechnungen einbezogen.
+ConfigurationHelp=Konfigurations-Hilfe
+
+# About-Seite
+ProductionHierarchyLongDesc=Produktionshierarchie bietet erweiterte Materialbedarfsplanung durch Analyse hierarchischer Stücklisten-Strukturen, aktueller Lagerbestände, aktiver Fertigungsaufträge und eingehender Lieferantenbestellungen. Das Modul generiert intelligente Vorschläge für Produktion (MOs) und Beschaffung zur Erreichung Ihrer Produktionsziele.
+Feature1=Hierarchische Stücklisten-Analyse mit mehrstufiger Komponenten-Aufschlüsselung
+Feature2=Echtzeit-Verfügbarkeitsberechnung (Lager + Fertigungsaufträge + Lieferantenbestellungen)
+Feature3=Intelligente Produktionsvorschläge basierend auf Materialverfügbarkeit
+Feature4=Beschaffungsvorschläge für fehlende Rohmaterialien
+Feature5=Direkte Fertigungsauftrags-Erstellung aus Vorschlägen
+Feature6=Konfigurierbare Lager-Filterung und Berechnungsoptionen
+
+# Hauptseite
+ProductionHierarchy=Produktionshierarchie
+ProductionNeeds=Produktionsbedarfs-Analyse
+AnalyzeProductionNeeds=Produktionsbedarf analysieren
+SelectProduct=Produkt auswählen
+DesiredQuantity=Gewünschte Menge
+AnalyzeButton=Analysieren
+ResetButton=Zurücksetzen
+
+# Ergebnisse
+AvailabilitySummary=Verfügbarkeits-Übersicht
+ComponentHierarchy=Komponenten-Hierarchie
+Suggestions=Vorschläge
+Product=Produkt
+StockAvailable=Lagerbestand
+MOsPlanned=Geplante FAs
+SupplierOrdersIncoming=Eingehende Bestellungen
+TotalAvailable=Gesamt verfügbar
+Shortage=Fehlmenge
+Surplus=Überschuss
+ExactMatch=Exakte Übereinstimmung
+
+# Hierarchie-Tabelle
+Level=Ebene
+Component=Komponente
+NeededQty=Benötigte Menge
+CurrentStock=Aktueller Bestand
+MOs=FAs
+SupplierOrders=Bestellungen
+Status=Status
+Available=Verfügbar
+Missing=Fehlend
+Sufficient=Ausreichend
+
+# Vorschläge
+MOsToCreate=Zu erstellende Fertigungsaufträge
+OrdersToCreate=Zu erstellende Beschaffungsaufträge
+CreateMO=FA erstellen
+CreateOrder=Bestellung erstellen
+NoSuggestionsNeeded=Keine Vorschläge nötig - alle Materialien sind verfügbar
+SelectAll=Alle auswählen
+CreateSelectedMOs=Ausgewählte FAs erstellen
+Priority=Priorität
+Quantity=Menge
+BOM=Stückliste
+
+# Meldungen
+NoProductSelected=Bitte wählen Sie ein Produkt aus
+NoQuantityEntered=Bitte geben Sie eine gewünschte Menge ein
+NoBOMFound=Keine Stückliste für dieses Produkt gefunden
+AnalysisComplete=Analyse erfolgreich abgeschlossen
+MOCreated=Fertigungsauftrag erstellt: %s
+MOsCreatedSuccess=%s Fertigungsaufträge erfolgreich erstellt
+ErrorCreatingMO=Fehler beim Erstellen des Fertigungsauftrags: %s
+SelectAtLeastOneMO=Bitte wählen Sie mindestens einen FA zum Erstellen aus
+
+# Berechtigungen
+Permission8000100read=Produktionshierarchie-Analyse lesen
+Permission8000100create=Fertigungsaufträge aus Vorschlägen erstellen
+Permission8000100export=Produktionshierarchie-Ergebnisse exportieren
+
+# Tooltips
+DesiredQuantityHelp=Geben Sie die Menge ein, die Sie produzieren möchten
+UseVirtualStockOption=Virtuellen Bestand verwenden (inkl. geplanter Bestellungen)
+ConsiderMOsOption=Aktive Fertigungsaufträge in Berechnung einbeziehen
+ConsiderSupplierOrdersOption=Eingehende Lieferantenbestellungen in Berechnung einbeziehen
+
+# Status
+StatusDraft=Entwurf
+StatusValidated=Bestätigt
+StatusInProgress=In Bearbeitung
+StatusProduced=Produziert
+StatusCanceled=Storniert
+
+# FA-Status-Filter
+MOStatusFilter=FA-Status-Filter
+MOStatusValidated=Bestätigt (Zu produzieren)
+MOStatusInProgress=In Bearbeitung
+OnlyValidatedMOs=Nur bestätigte Fertigungsaufträge
+ValidatedAndInProgress=Bestätigt + In Bearbeitung
+
+# Typen
+TypeRaw=Rohmaterial
+TypeSubbom=Baugruppe
+TypeProduct=Produkt
+
+# Fehler
+ErrorNoWarehouse=Kein Lager konfiguriert. Bitte prüfen Sie die Modul-Einstellungen.
+ErrorDatabaseQuery=Datenbankabfrage-Fehler
+ErrorInvalidProduct=Ungültige Produkt-ID
+ErrorInvalidQuantity=Menge muss größer als null sein

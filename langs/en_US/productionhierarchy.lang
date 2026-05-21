@@ -1,0 +1,130 @@
+# Production Hierarchy Module - English Translation
+# Copyright (C) 2025 Kim Wittkowski <kim@wittkowski-it.de>
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+CHARSET=UTF-8
+
+# Module
+Module8000100Name=Production Hierarchy
+Module8000100Desc=Extended Material Requirements Planning (MRP) with intelligent production and procurement suggestions
+
+# Admin Setup
+ProductionHierarchySetup=Production Hierarchy Setup
+ProductionHierarchyAbout=About Production Hierarchy
+ProductionHierarchySetupInfo=Configure how the Production Hierarchy module calculates material requirements and generates suggestions.
+
+# Configuration
+UseVirtualStock=Use Virtual Stock
+UseVirtualStockHelp=When enabled, calculations use virtual stock (physical stock + planned orders - customer orders). When disabled, only physical stock is used.
+WarehousePrefix=Warehouse Prefix
+WarehousePrefixHelp=Only warehouses starting with this prefix will be included in stock calculations (e.g., "10001" includes 10001, 100010, 100012, etc.). Leave empty to include all warehouses.
+ConsiderMOs=Consider Manufacturing Orders
+ConsiderMOsHelp=When enabled, active manufacturing orders (Validated & In Progress) are included in availability calculations.
+ConsiderSupplierOrders=Consider Supplier Orders
+ConsiderSupplierOrdersHelp=When enabled, incoming supplier orders (Ordered & Partially Received) are included in availability calculations.
+ConfigurationHelp=Configuration Help
+
+# About Page
+ProductionHierarchyLongDesc=Production Hierarchy provides advanced material requirements planning by analyzing hierarchical BOM structures, current stock levels, active manufacturing orders, and incoming supplier orders. The module generates intelligent suggestions for production (MOs) and procurement to meet your production goals.
+Feature1=Hierarchical BOM analysis with multi-level component breakdown
+Feature2=Real-time availability calculation (Stock + MOs + Supplier Orders)
+Feature3=Intelligent production suggestions based on material availability
+Feature4=Procurement suggestions for missing raw materials
+Feature5=Direct manufacturing order creation from suggestions
+Feature6=Configurable warehouse filtering and calculation options
+
+# Main Page
+ProductionHierarchy=Production Hierarchy
+ProductionNeeds=Production Needs Analysis
+AnalyzeProductionNeeds=Analyze Production Needs
+SelectProduct=Select Product
+DesiredQuantity=Desired Quantity
+AnalyzeButton=Analyze
+ResetButton=Reset
+
+# Results
+AvailabilitySummary=Availability Summary
+ComponentHierarchy=Component Hierarchy
+Suggestions=Suggestions
+Product=Product
+StockAvailable=Stock Available
+MOsPlanned=MOs Planned
+SupplierOrdersIncoming=Supplier Orders Incoming
+TotalAvailable=Total Available
+Shortage=Shortage
+Surplus=Surplus
+ExactMatch=Exact Match
+
+# Hierarchy Table
+Level=Level
+Component=Component
+NeededQty=Needed Qty
+CurrentStock=Current Stock
+MOs=MOs
+SupplierOrders=Orders
+Status=Status
+Available=Available
+Missing=Missing
+Sufficient=Sufficient
+
+# Suggestions
+MOsToCreate=Manufacturing Orders to Create
+OrdersToCreate=Procurement Orders to Create
+CreateMO=Create MO
+CreateOrder=Create Order
+NoSuggestionsNeeded=No suggestions needed - all materials are available
+SelectAll=Select All
+CreateSelectedMOs=Create Selected MOs
+Priority=Priority
+Quantity=Quantity
+BOM=BOM
+
+# Messages
+NoProductSelected=Please select a product
+NoQuantityEntered=Please enter a desired quantity
+NoBOMFound=No BOM found for this product
+AnalysisComplete=Analysis completed successfully
+MOCreated=Manufacturing order created: %s
+MOsCreatedSuccess=%s manufacturing orders created successfully
+ErrorCreatingMO=Error creating manufacturing order: %s
+SelectAtLeastOneMO=Please select at least one MO to create
+
+# Permissions
+Permission8000100read=Read production hierarchy analysis
+Permission8000100create=Create manufacturing orders from suggestions
+Permission8000100export=Export production hierarchy results
+
+# Tooltips
+DesiredQuantityHelp=Enter the quantity you want to produce
+UseVirtualStockOption=Use virtual stock (includes planned orders)
+ConsiderMOsOption=Include active manufacturing orders in calculation
+ConsiderSupplierOrdersOption=Include incoming supplier orders in calculation
+
+# Status
+StatusDraft=Draft
+StatusValidated=Validated
+StatusInProgress=In Progress
+StatusProduced=Produced
+StatusCanceled=Canceled
+
+# MO Status Filter
+MOStatusFilter=MO Status Filter
+MOStatusValidated=Validated (To Produce)
+MOStatusInProgress=In Progress
+OnlyValidatedMOs=Only validated manufacturing orders
+ValidatedAndInProgress=Validated + In Progress
+
+# Types
+TypeRaw=Raw Material
+TypeSubbom=Sub-Assembly
+TypeProduct=Product
+
+# Errors
+ErrorNoWarehouse=No warehouse configured. Please check module setup.
+ErrorDatabaseQuery=Database query error
+ErrorInvalidProduct=Invalid product ID
+ErrorInvalidQuantity=Quantity must be greater than zero
