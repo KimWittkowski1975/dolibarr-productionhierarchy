@@ -51,10 +51,12 @@ $langs->loadLangs(array("productionhierarchy@productionhierarchy", "mrp", "stock
 $product_id = GETPOSTINT('product_id');
 $desired_qty = GETPOSTFLOAT('desired_qty');
 $action = GETPOST('action', 'aZ09');
-$use_virtual_stock = GETPOSTINT('use_virtual_stock');
-$consider_mos = GETPOSTINT('consider_mos');
-$consider_supplier_orders = GETPOSTINT('consider_supplier_orders');
 $warehouse_id = GETPOSTINT('warehouse_id');
+
+// Fixed options - always use virtual stock and consider MOs + Supplier Orders
+$use_virtual_stock = 1;
+$consider_mos = 1;
+$consider_supplier_orders = 1;
 
 // Initialize objects
 $form = new Form($db);
@@ -171,20 +173,14 @@ print '<tr><td class="fieldrequired">'.$form->textwithpicto($langs->trans('Desir
 print '<input type="number" step="0.01" min="0" name="desired_qty" value="'.($desired_qty > 0 ? $desired_qty : '').'" required class="flat minwidth200">';
 print '</td></tr>';
 
-// Options
-print '<tr><td>'.$langs->trans('UseVirtualStock').'</td><td>';
-print '<input type="checkbox" name="use_virtual_stock" value="1"'.($use_virtual_stock ? ' checked' : '').'> ';
-print $langs->trans('UseVirtualStockOption');
-print '</td></tr>';
-
-print '<tr><td>'.$langs->trans('ConsiderMOs').'</td><td>';
-print '<input type="checkbox" name="consider_mos" value="1"'.(isset($_POST['consider_mos']) ? ($consider_mos ? ' checked' : '') : ' checked').'> ';
-print $langs->trans('ConsiderMOsOption');
-print '</td></tr>';
-
-print '<tr><td>'.$langs->trans('ConsiderSupplierOrders').'</td><td>';
-print '<input type="checkbox" name="consider_supplier_orders" value="1"'.(isset($_POST['consider_supplier_orders']) ? ($consider_supplier_orders ? ' checked' : '') : ' checked').'> ';
-print $langs->trans('ConsiderSupplierOrdersOption');
+// Calculation Method Info
+print '<tr><td colspan="2">';
+print '<div class="info" style="margin: 10px 0; padding: 12px; background-color: #e8f5e9; border-left: 4px solid #4CAF50;">';
+print '<strong>'.img_picto('', 'info', 'class="pictofixedwidth"').$langs->trans('CalculationMethod').':</strong><br>';
+print '<div style="margin-left: 25px; margin-top: 8px; font-family: monospace; font-size: 13px; line-height: 1.8;">';
+print $langs->trans('CalculationFormulaDisplay');
+print '</div>';
+print '</div>';
 print '</td></tr>';
 
 print '</table>';
@@ -270,9 +266,10 @@ if ($analysis_results !== null && is_array($analysis_results)) {
 		print '<th>'.$langs->trans('Component').'</th>';
 		print '<th class="right">'.$langs->trans('NeededQty').'</th>';
 		print '<th class="right">'.$langs->trans('CurrentStock').'</th>';
-		print '<th class="right">'.$langs->trans('MOs').'</th>';
+		print '<th class="right">'.$langs->trans('PlannedMOs').'</th>';
 		print '<th class="right">'.$langs->trans('SupplierOrders').'</th>';
-		print '<th class="right">'.$langs->trans('TotalAvailable').'</th>';
+		print '<th class="right">'.$langs->trans('VirtualAvailable').'</th>';
+		print '<th class="right">'.$langs->trans('QtyDifference').'</th>';
 		print '<th class="center">'.$langs->trans('Status').'</th>';
 		print '</tr>';
 
@@ -309,8 +306,18 @@ if ($analysis_results !== null && is_array($analysis_results)) {
 			// Supplier Orders
 			print '<td class="right">'.price($component['supplier_orders_qty'], 0, '', 0, 0).'</td>';
 
-			// Total Available
+			// Virtual Available
 			print '<td class="right">'.price($component['total_available'], 0, '', 0, 0).'</td>';
+
+			// Qty Difference (Virtual Available - Needed Qty)
+			$qty_difference = $component['total_available'] - $component['needed_qty'];
+			print '<td class="right"';
+			if ($qty_difference < 0) {
+				print ' style="color: #bc3030; font-weight: bold;"'; // Red for shortage
+			} elseif ($qty_difference > 0) {
+				print ' style="color: #419641;"'; // Green for surplus
+			}
+			print '>'.price($qty_difference, 0, '', 1, 0).'</td>'; // Show sign
 
 			// Status
 			print '<td class="center">';
@@ -351,12 +358,16 @@ if ($analysis_results !== null && is_array($analysis_results)) {
 			print '</div>';
 
 			foreach ($suggestions['mos_to_create'] as $index => $mo_suggestion) {
+				$step_number = $index + 1; // Display order: Step 1, Step 2, etc.
 				print '<div class="ph-suggestion-item">';
 				print '<input type="checkbox" name="selected_mos[]" value="'.$index.'" class="ph-suggestion-checkbox" checked>';
-				print '<span class="ph-priority-badge ph-priority-'.($mo_suggestion['priority'] + 1).'">'.$langs->trans('Priority').' '.($mo_suggestion['priority'] + 1).'</span>';
+				print '<span class="ph-priority-badge ph-priority-'.($mo_suggestion['priority'] + 1).'">'.$langs->trans('Step').' '.$step_number.'</span>';
 				print '<span class="ph-suggestion-info">';
 				print '<strong>'.price($mo_suggestion['qty'], 0, '', 0, 0).'x</strong> '.$mo_suggestion['product_ref'].' - '.$mo_suggestion['product_label'];
 				print ' <span class="opacitymedium">(BOM #'.$mo_suggestion['bom_id'].')</span>';
+				if ($mo_suggestion['priority'] > 0) {
+					print ' <span class="opacitymedium">['.$langs->trans('Level').' '.$mo_suggestion['priority'].']</span>';
+				}
 				print '</span>';
 
 				// Hidden fields

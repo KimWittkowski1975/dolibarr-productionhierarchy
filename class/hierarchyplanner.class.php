@@ -210,35 +210,36 @@ class HierarchyPlanner
 			);
 		}
 
-		// Stock
-		$stock = 0;
-		if (!empty($options['use_virtual_stock'])) {
-			$product->load_stock(''); // Load both real and virtual (no 'novirtual' option)
-			$stock = $product->stock_theorique;
-		} else {
-			$product->load_stock('novirtual'); // Real stock only
-			$stock = $product->stock_reel;
+		// Stock - Load both physical and virtual
+		$product->load_stock(''); // Load both real and virtual
+		$stock_physical = $product->stock_reel; // Physical stock for display
+		$stock_virtual = $product->stock_theorique; // Virtual stock for calculation
+		
+		if (empty($stock_physical)) {
+			$stock_physical = 0;
 		}
-
-		if (empty($stock)) {
-			$stock = 0;
+		if (empty($stock_virtual)) {
+			$stock_virtual = 0;
 		}
 
 		// Filter by warehouse prefix if configured
 		$warehouse_prefix = getDolGlobalString('PRODUCTIONHIERARCHY_WAREHOUSE_PREFIX', '');
 		if (!empty($warehouse_prefix) && is_array($product->stock_warehouse) && count($product->stock_warehouse) > 0) {
-			$filtered_stock = 0;
+			$filtered_stock_physical = 0;
+			$filtered_stock_virtual = 0;
 			$found_match = false;
 			foreach ($product->stock_warehouse as $warehouse_id => $warehouse_data) {
 				// Check if warehouse ID starts with prefix
 				if (strpos((string)$warehouse_id, $warehouse_prefix) === 0) {
-					$filtered_stock += $warehouse_data->real;
+					$filtered_stock_physical += $warehouse_data->real;
+					$filtered_stock_virtual += ($warehouse_data->real + $warehouse_data->tobuy - $warehouse_data->tosell);
 					$found_match = true;
 				}
 			}
 			// Only apply filter if we found matching warehouses
 			if ($found_match) {
-				$stock = $filtered_stock;
+				$stock_physical = $filtered_stock_physical;
+				$stock_virtual = $filtered_stock_virtual;
 			}
 		}
 
@@ -263,12 +264,14 @@ class HierarchyPlanner
 		}
 
 		$result = array(
-			'stock_available' => $stock,
+			'stock_physical' => $stock_physical,
+			'stock_virtual' => $stock_virtual,
+			'stock_available' => $stock_physical, // For display (backward compatibility)
 			'mos_planned' => $mos_qty,
 			'mos_list' => $mos_list,
 			'supplier_orders_incoming' => $supplier_orders_qty,
 			'supplier_orders_list' => $supplier_orders_list,
-			'total_available' => $stock + $mos_qty + $supplier_orders_qty
+			'total_available' => $stock_virtual + $mos_qty // Supplier orders already included in virtual stock
 		);
 
 		// Cache result
@@ -329,15 +332,21 @@ class HierarchyPlanner
 
 		$orders = array();
 
+		// Query supplier orders with received quantities from dispatch table
 		$sql = "SELECT cf.rowid as order_id, cf.ref as order_ref, cf.ref_supplier,";
-		$sql .= " cf.date_livraison, cfd.fk_product,";
-		$sql .= " cfd.qty as ordered_qty, cfd.qty - COALESCE(cfd.qty, 0) as qty_remaining";
+		$sql .= " cf.date_livraison, cfd.rowid as line_id, cfd.fk_product,";
+		$sql .= " cfd.qty as ordered_qty,";
+		$sql .= " COALESCE(SUM(cfd_dispatch.qty), 0) as qty_received,";
+		$sql .= " (cfd.qty - COALESCE(SUM(cfd_dispatch.qty), 0)) as qty_remaining";
 		$sql .= " FROM ".MAIN_DB_PREFIX."commande_fournisseur as cf";
 		$sql .= " INNER JOIN ".MAIN_DB_PREFIX."commande_fournisseurdet as cfd ON cf.rowid = cfd.fk_commande";
+		$sql .= " LEFT JOIN ".MAIN_DB_PREFIX."commande_fournisseur_dispatch as cfd_dispatch";
+		$sql .= " ON cfd.rowid = cfd_dispatch.fk_commandefourndet";
 		$sql .= " WHERE cfd.fk_product = ".((int) $product_id);
 		$sql .= " AND cf.fk_statut IN (3, 4)"; // Ordered + Partially Received
-		$sql .= " AND (cfd.qty - COALESCE(cfd.qty, 0)) > 0";
 		$sql .= " AND cf.entity = ".((int) $conf->entity);
+		$sql .= " GROUP BY cf.rowid, cfd.rowid";
+		$sql .= " HAVING qty_remaining > 0"; // Only lines with remaining quantity
 		$sql .= " ORDER BY cf.date_livraison ASC";
 
 		$resql = $this->db->query($sql);
@@ -349,7 +358,9 @@ class HierarchyPlanner
 					'order_id' => $obj->order_id,
 					'order_ref' => $obj->order_ref,
 					'ref_supplier' => $obj->ref_supplier,
-					'qty_remaining' => $obj->ordered_qty, // Fix: use ordered_qty since qty_received doesn't exist yet
+					'ordered_qty' => $obj->ordered_qty,
+					'qty_received' => $obj->qty_received,
+					'qty_remaining' => $obj->qty_remaining,
 					'delivery_date' => $obj->date_livraison
 				);
 			}
@@ -399,11 +410,15 @@ class HierarchyPlanner
 				// Check if sub-BOM product is available in stock
 				$availability = $this->getAvailability($subbom_product_id, $options);
 
-				if ($availability['total_available'] >= ($line->qty * $qty_factor)) {
-					// Sub-BOM product is sufficient in stock - use it as component
-					$this->addComponentToHierarchy($hierarchy, $subbom_product_id, $line->qty * $qty_factor, $level + 1, 'subbom', $line->fk_bom_child);
-				} else {
-					// Not enough in stock - recurse into sub-BOM components
+				// ALWAYS add sub-BOM as component to hierarchy (for MO suggestions)
+				$this->addComponentToHierarchy($hierarchy, $subbom_product_id, $line->qty * $qty_factor, $level + 1, 'subbom', $line->fk_bom_child);
+
+				// If not enough available, ALSO resolve into sub-components
+				if ($availability['total_available'] < ($line->qty * $qty_factor)) {
+					// Mark that this sub-BOM will be resolved into components
+					$this->markComponentAsResolved($hierarchy, $subbom_product_id, $level + 1);
+
+					// Recurse into sub-BOM components
 					$result = $this->resolveHierarchy($subbom, $line->qty * $qty_factor, $hierarchy, $level + 1, $options);
 					if ($result === false) {
 						return false;
@@ -460,8 +475,27 @@ class HierarchyPlanner
 				'level' => $level,
 				'needed_qty' => $qty,
 				'type' => $type,
-				'bom_id' => $bom_id
+				'bom_id' => $bom_id,
+				'resolved_into_components' => false // Flag to track if resolved into sub-components
 			);
+		}
+	}
+
+	/**
+	 * Mark a component as resolved into sub-components
+	 *
+	 * @param  array   &$hierarchy      Hierarchy array
+	 * @param  int     $product_id      Product ID
+	 * @param  int     $level           Level
+	 * @return void
+	 */
+	private function markComponentAsResolved(&$hierarchy, $product_id, $level)
+	{
+		foreach ($hierarchy as $key => &$comp) {
+			if ($comp['product_id'] == $product_id && $comp['level'] == $level) {
+				$comp['resolved_into_components'] = true;
+				break;
+			}
 		}
 	}
 
@@ -532,6 +566,11 @@ class HierarchyPlanner
 				));
 			}
 		}
+
+		// Sort MOs by priority (highest level first = create sub-assemblies before main product)
+		usort($mos_to_create, function ($a, $b) {
+			return $b['priority'] - $a['priority']; // Higher priority number = create first
+		});
 
 		return array(
 			'mos_to_create' => $mos_to_create,

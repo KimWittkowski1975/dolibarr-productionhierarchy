@@ -64,8 +64,10 @@ Level=Level
 Component=Component
 NeededQty=Needed Qty
 CurrentStock=Current Stock
-MOs=MOs
+PlannedMOs=Planned MOs
 SupplierOrders=Orders
+VirtualAvailable=Virtual Available
+QtyDifference=Qty Difference
 Status=Status
 Available=Available
 Missing=Missing
@@ -80,8 +82,10 @@ NoSuggestionsNeeded=No suggestions needed - all materials are available
 SelectAll=Select All
 CreateSelectedMOs=Create Selected MOs
 Priority=Priority
+Step=Step
 Quantity=Quantity
 BOM=BOM
+ManualOrderRequired=Manual order required
 
 # Messages
 NoProductSelected=Please select a product
@@ -103,6 +107,15 @@ DesiredQuantityHelp=Enter the quantity you want to produce
 UseVirtualStockOption=Use virtual stock (includes planned orders)
 ConsiderMOsOption=Include active manufacturing orders in calculation
 ConsiderSupplierOrdersOption=Include incoming supplier orders in calculation
+
+# Calculation Method
+CalculationMethod=Calculation Method
+CalculationFormulaDisplay=Desired Quantity - (Virtual Stock + Planned MOs) = Shortage
+CalculationMethodInfo=Module Calculation Method
+CalculationMethodDescription=The module uses virtual stock (already includes expected deliveries) plus active manufacturing orders to calculate availability. Supplier orders are displayed for information but are already included in virtual stock.
+VirtualStock=Virtual Stock
+ManufacturingOrders=Manufacturing Orders
+SupplierOrders=Supplier Orders (info only, already in virtual stock)
 
 # Status
 StatusDraft=Draft

@@ -64,8 +64,10 @@ Level=Ebene
 Component=Komponente
 NeededQty=Benötigte Menge
 CurrentStock=Aktueller Bestand
-MOs=FAs
+PlannedMOs=Geplante MOs
 SupplierOrders=Bestellungen
+VirtualAvailable=Virtuell verfügbar
+QtyDifference=Differenz Menge
 Status=Status
 Available=Verfügbar
 Missing=Fehlend
@@ -80,8 +82,10 @@ NoSuggestionsNeeded=Keine Vorschläge nötig - alle Materialien sind verfügbar
 SelectAll=Alle auswählen
 CreateSelectedMOs=Ausgewählte FAs erstellen
 Priority=Priorität
+Step=Schritt
 Quantity=Menge
 BOM=Stückliste
+ManualOrderRequired=Manuelle Bestellung erforderlich
 
 # Meldungen
 NoProductSelected=Bitte wählen Sie ein Produkt aus
@@ -103,6 +107,15 @@ DesiredQuantityHelp=Geben Sie die Menge ein, die Sie produzieren möchten
 UseVirtualStockOption=Virtuellen Bestand verwenden (inkl. geplanter Bestellungen)
 ConsiderMOsOption=Aktive Fertigungsaufträge in Berechnung einbeziehen
 ConsiderSupplierOrdersOption=Eingehende Lieferantenbestellungen in Berechnung einbeziehen
+
+# Berechnungsmethode
+CalculationMethod=Berechnungsmethode
+CalculationFormulaDisplay=Gewünschte Menge - (Virtueller Bestand + Geplante FAs) = Fehlmenge
+CalculationMethodInfo=Berechnungsmethode des Moduls
+CalculationMethodDescription=Das Modul verwendet den virtuellen Bestand (enthält bereits erwartete Lieferungen) plus aktive Fertigungsaufträge zur Berechnung der Verfügbarkeit. Lieferantenbestellungen werden zur Information angezeigt, sind aber bereits im virtuellen Bestand enthalten.
+VirtualStock=Virtueller Bestand
+ManufacturingOrders=Fertigungsaufträge
+SupplierOrders=Lieferantenbestellungen (nur Info, bereits im virt. Bestand)
 
 # Status
 StatusDraft=Entwurf

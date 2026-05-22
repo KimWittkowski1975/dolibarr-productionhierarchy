@@ -56,26 +56,11 @@ $backtopage = GETPOST('backtopage', 'alpha');
 $form = new Form($db);
 
 $arrayofparameters = array(
-	'PRODUCTIONHIERARCHY_USE_VIRTUAL_STOCK' => array(
-		'type' => 'yesno',
-		'label' => 'UseVirtualStock',
-		'help' => 'UseVirtualStockHelp'
-	),
 	'PRODUCTIONHIERARCHY_WAREHOUSE_PREFIX' => array(
 		'type' => 'text',
 		'label' => 'WarehousePrefix',
 		'help' => 'WarehousePrefixHelp',
 		'css' => 'minwidth200'
-	),
-	'PRODUCTIONHIERARCHY_CONSIDER_MOS' => array(
-		'type' => 'yesno',
-		'label' => 'ConsiderMOs',
-		'help' => 'ConsiderMOsHelp'
-	),
-	'PRODUCTIONHIERARCHY_CONSIDER_SUPPLIER_ORDERS' => array(
-		'type' => 'yesno',
-		'label' => 'ConsiderSupplierOrders',
-		'help' => 'ConsiderSupplierOrdersHelp'
 	),
 );
 
@@ -184,12 +169,21 @@ print '</form>';
 
 // Information section
 print '<br>';
-print '<div class="info hideonsmartphone">';
-print '<b>'.$langs->trans("ConfigurationHelp").':</b><br><br>';
-print '• <b>'.$langs->trans("UseVirtualStock").'</b>: '.$langs->trans("UseVirtualStockHelp").'<br>';
-print '• <b>'.$langs->trans("WarehousePrefix").'</b>: '.$langs->trans("WarehousePrefixHelp").'<br>';
-print '• <b>'.$langs->trans("ConsiderMOs").'</b>: '.$langs->trans("ConsiderMOsHelp").'<br>';
-print '• <b>'.$langs->trans("ConsiderSupplierOrders").'</b>: '.$langs->trans("ConsiderSupplierOrdersHelp").'<br>';
+print '<div class="info" style="padding: 15px; background-color: #e8f5e9; border-left: 4px solid #4CAF50;">';
+print '<h3 style="margin-top: 0;">'.img_picto('', 'info', 'class="pictofixedwidth"').$langs->trans("CalculationMethodInfo").'</h3>';
+print '<p><strong>'.$langs->trans("CalculationMethod").':</strong></p>';
+print '<div style="margin-left: 20px; font-family: monospace; font-size: 13px; line-height: 1.8; background-color: white; padding: 10px; border-radius: 4px;">';
+print $langs->trans("CalculationFormulaDisplay");
+print '</div>';
+print '<br>';
+print '<p>'.$langs->trans("CalculationMethodDescription").'</p>';
+print '<ul>';
+print '<li><b>'.$langs->trans("VirtualStock").'</b>: '.$langs->trans("UseVirtualStockHelp").'</li>';
+print '<li><b>'.$langs->trans("ManufacturingOrders").'</b>: '.$langs->trans("ConsiderMOsHelp").'</li>';
+print '<li><b>'.$langs->trans("SupplierOrders").'</b>: '.$langs->trans("ConsiderSupplierOrdersHelp").'</li>';
+print '</ul>';
+print '<br>';
+print '<p><b>'.$langs->trans("WarehousePrefix").'</b>: '.$langs->trans("WarehousePrefixHelp").'</p>';
 print '</div>';
 
 llxFooter();
