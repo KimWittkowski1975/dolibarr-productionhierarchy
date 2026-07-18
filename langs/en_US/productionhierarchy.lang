@@ -110,9 +110,9 @@ ConsiderSupplierOrdersOption=Include incoming supplier orders in calculation
 
 # Calculation Method
 CalculationMethod=Calculation Method
-CalculationFormulaDisplay=Desired Quantity - (Virtual Stock + Planned MOs) = Shortage
+CalculationFormulaDisplay=Desired Quantity - Virtual Stock = Shortage
 CalculationMethodInfo=Module Calculation Method
-CalculationMethodDescription=The module uses virtual stock (already includes expected deliveries) plus active manufacturing orders to calculate availability. Supplier orders are displayed for information but are already included in virtual stock.
+CalculationMethodDescription=The module uses Dolibarr's virtual stock to calculate availability. Virtual stock already includes: Physical stock + Expected deliveries - Expected shipments + Planned production (MOs) - Planned consumption (MOs). MOs and orders are additionally displayed for information but are already included in virtual stock.
 VirtualStock=Virtual Stock
 ManufacturingOrders=Manufacturing Orders
 SupplierOrders=Supplier Orders (info only, already in virtual stock)

@@ -226,20 +226,20 @@ class HierarchyPlanner
 		$warehouse_prefix = getDolGlobalString('PRODUCTIONHIERARCHY_WAREHOUSE_PREFIX', '');
 		if (!empty($warehouse_prefix) && is_array($product->stock_warehouse) && count($product->stock_warehouse) > 0) {
 			$filtered_stock_physical = 0;
-			$filtered_stock_virtual = 0;
 			$found_match = false;
 			foreach ($product->stock_warehouse as $warehouse_id => $warehouse_data) {
 				// Check if warehouse ID starts with prefix
 				if (strpos((string)$warehouse_id, $warehouse_prefix) === 0) {
 					$filtered_stock_physical += $warehouse_data->real;
-					$filtered_stock_virtual += ($warehouse_data->real + $warehouse_data->tobuy - $warehouse_data->tosell);
 					$found_match = true;
 				}
 			}
 			// Only apply filter if we found matching warehouses
 			if ($found_match) {
 				$stock_physical = $filtered_stock_physical;
-				$stock_virtual = $filtered_stock_virtual;
+				// Note: When filtering by warehouse, we can't accurately recalculate virtual stock
+				// Virtual stock from load_stock() is global and includes MOs/orders across all warehouses
+				// We keep the global virtual stock as it's the best available value
 			}
 		}
 
@@ -271,7 +271,7 @@ class HierarchyPlanner
 			'mos_list' => $mos_list,
 			'supplier_orders_incoming' => $supplier_orders_qty,
 			'supplier_orders_list' => $supplier_orders_list,
-			'total_available' => $stock_virtual + $mos_qty // Supplier orders already included in virtual stock
+			'total_available' => $stock_virtual // MOs and supplier orders already included in virtual stock
 		);
 
 		// Cache result

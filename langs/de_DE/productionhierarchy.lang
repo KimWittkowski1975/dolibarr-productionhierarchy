@@ -110,9 +110,9 @@ ConsiderSupplierOrdersOption=Eingehende Lieferantenbestellungen in Berechnung ei
 
 # Berechnungsmethode
 CalculationMethod=Berechnungsmethode
-CalculationFormulaDisplay=Gewünschte Menge - (Virtueller Bestand + Geplante FAs) = Fehlmenge
+CalculationFormulaDisplay=Gewünschte Menge - Virtueller Bestand = Fehlmenge
 CalculationMethodInfo=Berechnungsmethode des Moduls
-CalculationMethodDescription=Das Modul verwendet den virtuellen Bestand (enthält bereits erwartete Lieferungen) plus aktive Fertigungsaufträge zur Berechnung der Verfügbarkeit. Lieferantenbestellungen werden zur Information angezeigt, sind aber bereits im virtuellen Bestand enthalten.
+CalculationMethodDescription=Das Modul verwendet den virtuellen Bestand von Dolibarr zur Berechnung der Verfügbarkeit. Der virtuelle Bestand enthält bereits: Physischer Bestand + Erwartete Lieferungen - Erwartete Auslieferungen + Geplante Produktion (MOs) - Geplanter Verbrauch (MOs). MOs und Bestellungen werden zusätzlich zur Information angezeigt, sind aber bereits im virtuellen Bestand enthalten.
 VirtualStock=Virtueller Bestand
 ManufacturingOrders=Fertigungsaufträge
 SupplierOrders=Lieferantenbestellungen (nur Info, bereits im virt. Bestand)
