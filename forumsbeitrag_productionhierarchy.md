@@ -82,6 +82,6 @@ Die vorgeschlagenen Fertigungsaufträge lassen sich direkt aus der Ergebnisansic
 
 **Status:** Im produktiven Einsatz. Auf der Roadmap stehen u. a. CSV/Excel-Export, gespeicherte Analyseverläufe, PDF-Berichte und die Erstellung von Lieferantenbestellungen direkt aus den Vorschlägen.
 
-Über Fragen und Rückmeldungen freue ich mich – besonders, wenn jemand es an einer komplexeren Stücklistenstruktur als meiner testet.
+Über Rückmeldungen freue ich mich.
 
-— Kim (Wittkowski IT)
+
